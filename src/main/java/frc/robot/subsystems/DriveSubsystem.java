@@ -14,23 +14,23 @@ public class DriveSubsystem extends SubsystemBase{
 
     public Hardware(
         WPI_TalonSRX lFrontMotor,
-        WPI_TalonSRX lMidMotor,
+        //WPI_TalonSRX lMidMotor,
         WPI_TalonSRX lRearMotor,
         WPI_TalonSRX rFrontMotor,
-        WPI_TalonSRX rMidMotor,
+        //WPI_TalonSRX rMidMotor,
         WPI_TalonSRX rRearMotor
     ) {
         this.lFrontMotor = lFrontMotor;
-        this.lMidMotor = lMidMotor;
+        //this.lMidMotor = lMidMotor;
         this.lRearMotor = lRearMotor;
         this.rFrontMotor = rFrontMotor;
-        this.rMidMotor = rMidMotor;
+        //this.rMidMotor = rMidMotor;
         this.rRearMotor = rRearMotor;
     }
 }
 
     // Initializes motors
-    private WPI_TalonSRX m_lFrontMotor, m_lMidMotor, m_lRearMotor, m_rFrontMotor, m_rMidMotor, m_rRearMotor;
+    private WPI_TalonSRX m_lFrontMotor,  m_lRearMotor, m_rFrontMotor, m_rRearMotor;
     private DifferentialDrive m_drivetrain;
 
     /**
@@ -45,22 +45,22 @@ public class DriveSubsystem extends SubsystemBase{
 
     // Instantiates motors
     this.m_lFrontMotor = drivetrainHardware.lFrontMotor;
-    this.m_lMidMotor = drivetrainHardware.lMidMotor;
+    //this.m_lMidMotor = drivetrainHardware.lMidMotor;
     this.m_lRearMotor = drivetrainHardware.lRearMotor;
 
     this.m_rFrontMotor = drivetrainHardware.rFrontMotor;
-    this.m_rMidMotor = drivetrainHardware.rMidMotor;
+    //this.m_rMidMotor = drivetrainHardware.rMidMotor;
     this.m_rRearMotor = drivetrainHardware.rRearMotor;
 
     // Sets right motors inverted
     m_rFrontMotor.setInverted(true);
-    m_rMidMotor.setInverted(true);
+    //m_rMidMotor.setInverted(true);
     m_rRearMotor.setInverted(true);
 
     // Makes back motors follow front motors
-    m_lMidMotor.follow(m_lFrontMotor);
+    //m_lMidMotor.follow(m_lFrontMotor);
     m_lRearMotor.follow(m_lFrontMotor);
-    m_rMidMotor.follow(m_rFrontMotor);
+    //m_rMidMotor.follow(m_rFrontMotor);
     m_rRearMotor.follow(m_rFrontMotor);
 
     // Creates differential drive object with master motors as parameters
@@ -75,10 +75,10 @@ public class DriveSubsystem extends SubsystemBase{
   public static Hardware initializeHardware() {
     Hardware drivetrainHardware = new Hardware(
       new WPI_TalonSRX(Constants.Drive.LEFT_FRONT_MOTOR_ID),
-      new WPI_TalonSRX(Constants.Drive.LEFT_MID_MOTOR_ID),
+      //new WPI_TalonSRX(Constants.Drive.LEFT_MID_MOTOR_ID),
       new WPI_TalonSRX(Constants.Drive.LEFT_REAR_MOTOR_ID),
       new WPI_TalonSRX(Constants.Drive.RIGHT_FRONT_MOTOR_ID),
-      new WPI_TalonSRX(Constants.Drive.RIGHT_MID_MOTOR_ID),
+      //new WPI_TalonSRX(Constants.Drive.RIGHT_MID_MOTOR_ID),
       new WPI_TalonSRX(Constants.Drive.RIGHT_REAR_MOTOR_ID)
     );
 
