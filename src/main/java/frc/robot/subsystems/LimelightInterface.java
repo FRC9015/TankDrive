@@ -32,8 +32,11 @@ public class LimelightInterface extends SubsystemBase{
         // Check if the Limelight sees an AprilTag
         if (area > MIN_APRILTAG_AREA_THRESHOLD) {
             System.out.println("this works");
+            for (;area > MIN_APRILTAG_AREA_THRESHOLD;){
             // Control the robot based on Limelight data
             driveSubsystem.limelightControl(x, y, area);
+            System.out.println("moves");
+            }
         } else {
             // No AprilTag detected, stop the robot
             driveSubsystem.teleop(0.0, 0.0); // Stop the robot

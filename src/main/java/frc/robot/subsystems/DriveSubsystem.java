@@ -98,8 +98,8 @@ public class DriveSubsystem extends SubsystemBase{
   public void limelightControl(double x, double y, double area) {
     System.out.println("Limelight Control - X: " + x + ", Y: " + y + ", Area: " + area);
     // Adjust drive based on Limelight data
-    double turn = 25;
-    double speed = 5;//speed with limelight moving
+    double turn = x * 0.01;
+    double speed = 0.1;//speed with limelight moving
 
     // Use arcade drive to control the robot
     m_drivetrain.arcadeDrive(speed, turn);
