@@ -10,7 +10,7 @@ public class DriveSubsystem extends SubsystemBase{
     
     // Defines hardware class
     public static class Hardware {
-        private WPI_TalonSRX lFrontMotor, lMidMotor, lRearMotor, rFrontMotor, rMidMotor, rRearMotor;
+        private WPI_TalonSRX lFrontMotor, lRearMotor, rFrontMotor, rRearMotor;
 
     public Hardware(
         WPI_TalonSRX lFrontMotor,
@@ -67,7 +67,10 @@ public class DriveSubsystem extends SubsystemBase{
     m_drivetrain = new DifferentialDrive(m_lFrontMotor, m_rFrontMotor);
   }
 
-  /**
+  public DriveSubsystem() {
+    }
+
+/**
    * Initialize hardware devices for drive subsystem
    * 
    * @return hardware object containing all necessary devices for this subsystem
@@ -86,14 +89,17 @@ public class DriveSubsystem extends SubsystemBase{
   }
 
   public void teleop(double speed, double turn) {
+    
     m_drivetrain.arcadeDrive(speed, turn);
+
   }
   
   //Adds function to drive system for limelight
   public void limelightControl(double x, double y, double area) {
+    System.out.println("Limelight Control - X: " + x + ", Y: " + y + ", Area: " + area);
     // Adjust drive based on Limelight data
-    double turn = x *0.01;
-    double speed = 0.1;//speed with limelight moving
+    double turn = 25;
+    double speed = 5;//speed with limelight moving
 
     // Use arcade drive to control the robot
     m_drivetrain.arcadeDrive(speed, turn);

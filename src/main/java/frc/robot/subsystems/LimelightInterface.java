@@ -1,5 +1,7 @@
-package main.java.frc.robot.subsystems;
+package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.PerpetualCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -7,7 +9,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
-public class LimelightInterface {
+public class LimelightInterface extends SubsystemBase{
 
     private static NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
     private DriveSubsystem driveSubsystem;
@@ -15,8 +17,10 @@ public class LimelightInterface {
     public LimelightInterface(DriveSubsystem driveSubsystem) {
         this.driveSubsystem = driveSubsystem;
     }
-
+    
+    @Override
     public void periodic() {
+        
         NetworkTableEntry tx = limelight.getEntry("tx");//Tag X value
         NetworkTableEntry ty = limelight.getEntry("ty");//Tag Y value
         NetworkTableEntry ta = limelight.getEntry("ta");//Tag Area
@@ -24,14 +28,16 @@ public class LimelightInterface {
         double x = tx.getDouble(0.0);
         double y = ty.getDouble(0.0);
         double area = ta.getDouble(0.0);
-
+        
         // Check if the Limelight sees an AprilTag
         if (area > MIN_APRILTAG_AREA_THRESHOLD) {
+            System.out.println("this works");
             // Control the robot based on Limelight data
             driveSubsystem.limelightControl(x, y, area);
         } else {
             // No AprilTag detected, stop the robot
             driveSubsystem.teleop(0.0, 0.0); // Stop the robot
+            System.out.println("no tag");
         }
 
         // Update SmartDashboard and Shuffleboard
@@ -39,18 +45,13 @@ public class LimelightInterface {
     }
     //updates shuffleboard
     private void updateDashboard(double x, double y, double area) {
-        Shuffleboard.putNumber("LimelightX", x);
-        Shuffleboard.putNumber("LimelightY", y);
-        Shuffleboard.putNumber("LimelightArea", area);
+        SmartDashboard.putNumber("LimelightX", x);
+        SmartDashboard.putNumber("LimelightY", y);
+        SmartDashboard.putNumber("LimelightArea", area);
         
-        //makes window for X on shuffleboard
-        Shuffleboard.getTab("SmartDashboard")
-                .add("LimelightX", x)
-                .withWidget(BuiltInWidgets.kNumberBar)
-                .withPosition(0, 0)
-                .withSize(2, 1);
-
+        
         //updates suffleboard
         Shuffleboard.update();
-    }
+        
+    }   
 }

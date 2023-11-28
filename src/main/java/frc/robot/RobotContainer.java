@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.LimelightInterface;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -22,6 +24,10 @@ public class RobotContainer {
 
   // The robot's subsystems and commands are defined here...
   private static final DriveSubsystem DRIVE_SUBSYSTEM = new DriveSubsystem(DriveSubsystem.initializeHardware());
+  private final LimelightInterface limelightInterface = new LimelightInterface(DRIVE_SUBSYSTEM);
+ 
+
+
   
   // Declare the controller
   private final XboxController PRIMARY_CONTROLLER =
@@ -29,10 +35,10 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-
+    CommandScheduler.getInstance().registerSubsystem(limelightInterface);
     // Configure the trigger bindings
     configureBindings();
-
+    
     // Set the default command
     DRIVE_SUBSYSTEM.setDefaultCommand(
       new RunCommand(
@@ -41,7 +47,10 @@ public class RobotContainer {
           DRIVE_SUBSYSTEM
         )
     );
+    
   }
+  
+  
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
@@ -55,14 +64,20 @@ public class RobotContainer {
   private void configureBindings() {
   
   }
-
+  
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
+  
+   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return null;
   }
+
+
+
+  
 }
+
