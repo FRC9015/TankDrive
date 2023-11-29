@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 public class LimelightInterface extends SubsystemBase{
 
     private static NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
+    boolean tag = false;
     private DriveSubsystem driveSubsystem;
     private static final double MIN_APRILTAG_AREA_THRESHOLD = 0.1;
     public LimelightInterface(DriveSubsystem driveSubsystem) {
@@ -31,11 +32,15 @@ public class LimelightInterface extends SubsystemBase{
         
         // Check if the Limelight sees an AprilTag
         if (area > MIN_APRILTAG_AREA_THRESHOLD) {
+            tag = true;
             System.out.println("this works");
-            for (;area > MIN_APRILTAG_AREA_THRESHOLD;){
+            while(tag == true){
             // Control the robot based on Limelight data
             driveSubsystem.limelightControl(x, y, area);
             System.out.println("moves");
+            }
+            if(area < 0.1){
+                tag = false;
             }
         } else {
             // No AprilTag detected, stop the robot
