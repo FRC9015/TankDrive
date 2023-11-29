@@ -14,7 +14,7 @@ public class LimelightInterface extends SubsystemBase{
     private static NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
     boolean tag = false;
     private DriveSubsystem driveSubsystem;
-    private static final double MIN_APRILTAG_AREA_THRESHOLD = 0.1;
+    private static final double MIN_APRILTAG_AREA = 0.1;
     public LimelightInterface(DriveSubsystem driveSubsystem) {
         this.driveSubsystem = driveSubsystem;
     }
@@ -31,35 +31,37 @@ public class LimelightInterface extends SubsystemBase{
         double area = ta.getDouble(0.0);
         
         // Check if the Limelight sees an AprilTag
-        if (area > MIN_APRILTAG_AREA_THRESHOLD) {
+        if (area > MIN_APRILTAG_AREA) {
             tag = true;
-            System.out.println("this works");
+            System.out.println("dis works");
+            //loop so that the robot drives
             while(tag == true){
-            // Control the robot based on Limelight data
-            driveSubsystem.limelightControl(x, y, area);
-            System.out.println("moves");
-            }
-            if(area < 0.1){
-                tag = false;
+                // Control the robot based on Limelight 
+                driveSubsystem.limelightControl(x, y, area);
+                System.out.println("moves");
+                //if statment so that loop stops when tag is gone
+                if(area < 0.1){
+                    tag = false;
+                    System.out.println("tag is gone");
+                }
             }
         } else {
-            // No AprilTag detected, stop the robot
-            driveSubsystem.teleop(0.0, 0.0); // Stop the robot
+            // No AprilTag detected, makes sure robot is not moving
+            driveSubsystem.teleop(0.0, 0.0); // makes robot not move
             System.out.println("no tag");
         }
 
         // Update SmartDashboard and Shuffleboard
         updateDashboard(x, y, area);
     }
+    
     //updates shuffleboard
     private void updateDashboard(double x, double y, double area) {
         SmartDashboard.putNumber("LimelightX", x);
         SmartDashboard.putNumber("LimelightY", y);
         SmartDashboard.putNumber("LimelightArea", area);
         
-        
         //updates suffleboard
         Shuffleboard.update();
-        
     }   
 }
