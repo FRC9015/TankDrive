@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -89,9 +90,13 @@ public class DriveSubsystem extends SubsystemBase{
   }
 
   public void teleop(double speed, double turn) {
-    
-    m_drivetrain.arcadeDrive(speed, turn);
-
+    speed = MathUtil.clamp(speed, -1.0, 1.0);
+    turn = MathUtil.clamp(turn, -1.0, 1.0);
+  
+      m_drivetrain.arcadeDrive(speed, turn);
+  }
+  public void stop(){
+    m_drivetrain.stopMotor();
   }
   
   //Adds function to drive system for limelight
@@ -99,10 +104,10 @@ public class DriveSubsystem extends SubsystemBase{
     System.out.println("Limelight Control - X: " + x + ", Y: " + y + ", Area: " + area);
     // Adjust drive based on Limelight data
     double turn = x * 0.01;
-    double speed = 0.1;//speed with limelight moving
+    double speed = 0.5;//speed with limelight moving
 
     // Use arcade drive to control the robot
-    m_drivetrain.arcadeDrive(speed, turn);
+    teleop(speed, turn);
 }
 
   @Override

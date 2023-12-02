@@ -21,38 +21,49 @@ public class LimelightInterface extends SubsystemBase{
     
     @Override
     public void periodic() {
-        
+        System.out.println(tag);
         NetworkTableEntry tx = limelight.getEntry("tx");//Tag X value
         NetworkTableEntry ty = limelight.getEntry("ty");//Tag Y value
         NetworkTableEntry ta = limelight.getEntry("ta");//Tag Area
         //sets the X,Y, and Area values to 0
+
         double x = tx.getDouble(0.0);
         double y = ty.getDouble(0.0);
         double area = ta.getDouble(0.0);
-        
+
         // Check if the Limelight sees an AprilTag
         if (area > MIN_APRILTAG_AREA) {
+            int a = 1;
             tag = true;
-            System.out.println("dis works");
+            
             //loop so that the robot drives
-            while(tag == true){
+            while(tag = true){
                 // Control the robot based on Limelight 
+               
                 driveSubsystem.limelightControl(x, y, area);
-                System.out.println("moves");
+                
+                //updates values
+                x = tx.getDouble(0.0);
+                y = ty.getDouble(0.0);
+                area = ta.getDouble(0.0);
                 //if statment so that loop stops when tag is gone
-                if(area < 0.1){
+                if(area < MIN_APRILTAG_AREA){
                     tag = false;
-                    System.out.println("tag is gone");
+                    driveSubsystem.teleop(0.0, 0.0);
                 }
+                
             }
-        } else {
-            // No AprilTag detected, makes sure robot is not moving
-            driveSubsystem.teleop(0.0, 0.0); // makes robot not move
-            System.out.println("no tag");
+            if(area < MIN_APRILTAG_AREA){
+                driveSubsystem.teleop(0.0,0.0); // makes robot not move
+                    
+            }
+          
+        }else{
+            driveSubsystem.teleop(0.0,0.0);
         }
-
-        // Update SmartDashboard and Shuffleboard
-        updateDashboard(x, y, area);
+            
+            // No AprilTag detected, makes sure robot is not moving
+              
     }
     
     //updates shuffleboard
@@ -61,7 +72,7 @@ public class LimelightInterface extends SubsystemBase{
         SmartDashboard.putNumber("LimelightY", y);
         SmartDashboard.putNumber("LimelightArea", area);
         
-        //updates suffleboard
-        Shuffleboard.update();
-    }   
+        
+    }
+       
 }
