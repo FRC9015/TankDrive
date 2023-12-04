@@ -92,22 +92,22 @@ public class DriveSubsystem extends SubsystemBase{
   public void teleop(double speed, double turn) {
     speed = MathUtil.clamp(speed, -1.0, 1.0);
     turn = MathUtil.clamp(turn, -1.0, 1.0);
-  
-      m_drivetrain.arcadeDrive(speed, turn);
-  }
-  public void stop(){
-    m_drivetrain.stopMotor();
+
+    m_drivetrain.arcadeDrive(speed, turn);
   }
   
   //Adds function to drive system for limelight
   public void limelightControl(double x, double y, double area) {
-    System.out.println("Limelight Control - X: " + x + ", Y: " + y + ", Area: " + area);
     // Adjust drive based on Limelight data
     double turn = x * 0.01;
     double speed = 0.5;//speed with limelight moving
 
     // Use arcade drive to control the robot
     teleop(speed, turn);
+    //stops the code when the tag is not seen
+    if(area < 0.1){
+      System.exit(0);
+    }
 }
 
   @Override

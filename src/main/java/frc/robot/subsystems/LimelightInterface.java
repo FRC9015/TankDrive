@@ -18,61 +18,49 @@ public class LimelightInterface extends SubsystemBase{
     public LimelightInterface(DriveSubsystem driveSubsystem) {
         this.driveSubsystem = driveSubsystem;
     }
-    
+    //updates dashboard
+    private void updateDashboard(double x, double y, double area) {
+        SmartDashboard.putNumber("LimelightX", x);
+        SmartDashboard.putNumber("LimelightY", y);
+        SmartDashboard.putNumber("LimelightArea", area); 
+    }
+    //code that is ran
     @Override
     public void periodic() {
         System.out.println(tag);
+        //takes the X,Y, and area values from the limelight networktable
         NetworkTableEntry tx = limelight.getEntry("tx");//Tag X value
         NetworkTableEntry ty = limelight.getEntry("ty");//Tag Y value
         NetworkTableEntry ta = limelight.getEntry("ta");//Tag Area
-        //sets the X,Y, and Area values to 0
-
+        
+        //makes the X,Y, and Area into variables to be used
         double x = tx.getDouble(0.0);
         double y = ty.getDouble(0.0);
         double area = ta.getDouble(0.0);
 
         // Check if the Limelight sees an AprilTag
         if (area > MIN_APRILTAG_AREA) {
-            int a = 1;
             tag = true;
             
-            //loop so that the robot drives
+            //loop so that the robot drives when it sees tag
             while(tag = true){
                 // Control the robot based on Limelight 
-               
                 driveSubsystem.limelightControl(x, y, area);
                 
-                //updates values
+                //updates values periodicly
                 x = tx.getDouble(0.0);
                 y = ty.getDouble(0.0);
                 area = ta.getDouble(0.0);
-                //if statment so that loop stops when tag is gone
+                updateDashboard(x, y, area);
+               
+                //if statment so that loop stops when tag is not seen
                 if(area < MIN_APRILTAG_AREA){
                     tag = false;
-                    driveSubsystem.teleop(0.0, 0.0);
                 }
-                
             }
-            if(area < MIN_APRILTAG_AREA){
-                driveSubsystem.teleop(0.0,0.0); // makes robot not move
-                    
-            }
-          
         }else{
-            driveSubsystem.teleop(0.0,0.0);
+            //print statment that shows it does not see tag
+            System.out.println("no tag");
         }
-            
-            // No AprilTag detected, makes sure robot is not moving
-              
     }
-    
-    //updates shuffleboard
-    private void updateDashboard(double x, double y, double area) {
-        SmartDashboard.putNumber("LimelightX", x);
-        SmartDashboard.putNumber("LimelightY", y);
-        SmartDashboard.putNumber("LimelightArea", area);
-        
-        
-    }
-       
 }
