@@ -105,9 +105,6 @@ public class DriveSubsystem extends SubsystemBase{
     // Use arcade drive to control the robot
     teleop(speed, turn);
     //stops the code when the tag is not seen
-    if(area < 0.1){
-      System.exit(0);
-    }
 }
 
   @Override

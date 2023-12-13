@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -12,7 +13,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimelightInterface;
+import frc.robot.subsystems.SelfDriveSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.RobotSelf;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -22,20 +25,22 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class RobotContainer {
 
-  // The robot's subsystems and commands are defined here...
-  private static final DriveSubsystem DRIVE_SUBSYSTEM = new DriveSubsystem(DriveSubsystem.initializeHardware());
-  private final LimelightInterface limelightInterface = new LimelightInterface(DRIVE_SUBSYSTEM);
- 
+  private RobotSelf robotSelf = new RobotSelf();
 
-
-  
   // Declare the controller
   private final XboxController PRIMARY_CONTROLLER =
       new XboxController(OperatorConstants.kDriverControllerPort);
 
+  // The robot's subsystems and commands are defined here...
+  private static final DriveSubsystem DRIVE_SUBSYSTEM = new DriveSubsystem(DriveSubsystem.initializeHardware());
+  private final LimelightInterface limelightInterface = new LimelightInterface();
+  private final SelfDriveSubsystem selfDriveSubsystem = new SelfDriveSubsystem(PRIMARY_CONTROLLER, robotSelf);
+  
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     CommandScheduler.getInstance().registerSubsystem(limelightInterface);
+    CommandScheduler.getInstance().registerSubsystem(selfDriveSubsystem);
     // Configure the trigger bindings
     configureBindings();
     
@@ -43,7 +48,11 @@ public class RobotContainer {
     DRIVE_SUBSYSTEM.setDefaultCommand(
       new RunCommand(
         // This is now negative
-          () -> DRIVE_SUBSYSTEM.teleop(-PRIMARY_CONTROLLER.getLeftY(), -PRIMARY_CONTROLLER.getRightX()), 
+          () -> {
+            if (!robotSelf.selfdrive){
+            DRIVE_SUBSYSTEM.teleop(-PRIMARY_CONTROLLER.getLeftY(), -PRIMARY_CONTROLLER.getRightX());
+            }
+          }, 
           DRIVE_SUBSYSTEM
         )
     );
