@@ -49,7 +49,7 @@ public class RobotContainer {
       new RunCommand(
         // This is now negative
           () -> {
-            if (!robotSelf.selfdrive){
+            if (!robotSelf.getselfdrive()){
             DRIVE_SUBSYSTEM.teleop(-PRIMARY_CONTROLLER.getLeftY(), -PRIMARY_CONTROLLER.getRightX());
             }
           }, 

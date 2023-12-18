@@ -16,9 +16,12 @@ public class SelfDriveSubsystem extends SubsystemBase{
     }
     @Override
     public void periodic(){
+        //checks to see if the X button has been pressed
         if(controller.getXButtonReleased()){
-            robotSelf.selfdrive = !robotSelf.selfdrive;
-            SmartDashboard.putBoolean("selfdrive", robotSelf.selfdrive);
+            //toggles selfdrive boolean
+            robotSelf.toggleselfdrive();
+            //puts selfdrive onto smartdashboard
+            SmartDashboard.putBoolean("Self Drive", robotSelf.getselfdrive());
         }
     }
 }
