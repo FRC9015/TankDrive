@@ -99,11 +99,14 @@ public class DriveSubsystem extends SubsystemBase{
   //Adds function to drive system for limelight
   public void limelightControl(double x, double y, double area) {
     // Adjust drive based on Limelight data
-    double turn = x * 0.01;
+    double turn = x * 0.3;
     double speed = 0.5;//speed with limelight moving
 
     // Use arcade drive to control the robot
     teleop(speed, turn);
+    if(area < 0.1){
+      return;
+    }
 }
 
   @Override

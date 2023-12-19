@@ -34,7 +34,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private static final DriveSubsystem DRIVE_SUBSYSTEM = new DriveSubsystem(DriveSubsystem.initializeHardware());
   private final LimelightInterface limelightInterface = new LimelightInterface();
-  private final SelfDriveSubsystem selfDriveSubsystem = new SelfDriveSubsystem(PRIMARY_CONTROLLER, robotSelf);
+  private final SelfDriveSubsystem selfDriveSubsystem = new SelfDriveSubsystem(PRIMARY_CONTROLLER, robotSelf,limelightInterface, DRIVE_SUBSYSTEM);
   
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
